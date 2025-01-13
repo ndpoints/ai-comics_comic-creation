@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+  description: API for managing the creation and editing of AI-generated comics.
+  title: Comic Creation API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /comics:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Comic"
+                type: array
+          description: A list of comics
+      summary: Get all comics
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comic"
+        required: true
+      responses:
+        "201":
+          description: Comic created successfully
+      summary: Create a new comic
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /comics/{comicId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: comicId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Comic deleted successfully
+      summary: Delete a comic by ID
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: comicId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comic"
+          description: A single comic
+      summary: Get a comic by ID
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: comicId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comic"
+        required: true
+      responses:
+        "200":
+          description: Comic updated successfully
+      summary: Update a comic by ID
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Comic:
+      example:
+        comic_id: 0
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        created_at: 2000-01-23T04:56:07.000+00:00
+        title: title
+        author_id: 6
+        content: content
+      properties:
+        comic_id:
+          type: integer
+        title:
+          type: string
+        author_id:
+          type: integer
+        content:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
